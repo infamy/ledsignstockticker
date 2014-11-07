@@ -2,6 +2,7 @@ __author__ = 'aharvey'
 import serial
 import string
 import ystockquote
+import time
 
 INIT = chr(170) + chr(170)+ chr(170)+chr(170)+chr(170)+chr(187)+chr(146)
 CLEAR = chr(140) + chr(140)
@@ -27,12 +28,17 @@ def cvtStr(msg):
     msg = string.replace(msg, "<PAUSE>", chr(143))
     return msg
 
-ser = serial.Serial(0, 2400, timeout=1)
+ser = serial.Serial("/dev/ttyUSB0", 2400, timeout=1)
 ser.write(INIT)
 
-ser.write(CLEAR)
-ser.write(cvtStr("FTNT %s %0.2f" % ()))
-ser.write(chr(128))
+while True:
+    FTNT = ystockquote.get_all('FTNT')
+
+    ser.write(CLEAR)
+    print "FTNT %s %s" % (FTNT['change'], FTNT['price'])
+    ser.write(cvtStr("FTNT %s %0.2f" % (FTNT['change'], FTNT['price'])))
+    ser.write(chr(128))
+    time.sleep(60)
 
 ser.close()
 
