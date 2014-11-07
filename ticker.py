@@ -36,7 +36,7 @@ while True:
 
     ser.write(CLEAR)
     print "FTNT %s %s" % (FTNT['change'], FTNT['price'])
-    ser.write(cvtStr("FTNT %s %0.2f" % (FTNT['change'], FTNT['price'])))
+    ser.write(cvtStr("FTNT %s %s" % (FTNT['change'], FTNT['price'])))
     ser.write(chr(128))
     time.sleep(60)
 
